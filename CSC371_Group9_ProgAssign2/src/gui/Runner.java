@@ -12,8 +12,7 @@ import part1.SQLTables;
  * @author Aaron Gerber
  * @author Austin Smale
  * @author David Gautschi
- * @author Nick Rummel
- *
+ * @author Nick Rummel CSC371-01
  */
 public class Runner
 {
@@ -68,6 +67,14 @@ public class Runner
 		}
 
 		runPartOne();
+
+		try
+		{
+			m_dbConn.close();
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
