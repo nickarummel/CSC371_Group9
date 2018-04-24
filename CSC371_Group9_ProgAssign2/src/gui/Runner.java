@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import part1.SQLTables;
+import part2.SQLInserts;
 
 /**
  * Class to run Programming Assignment 2
@@ -66,7 +67,8 @@ public class Runner
 			e.printStackTrace();
 		}
 
-		runPartOne();
+		// runPartOne();
+		// runPartTwo();
 
 		try
 		{
@@ -105,5 +107,15 @@ public class Runner
 	{
 		SQLTables st = new SQLTables();
 		st.createTables(m_dbConn);
+	}
+
+	/**
+	 * Executes Part 2's code, where the INSERT INTO * statements are executed
+	 * on the database.
+	 */
+	public static void runPartTwo()
+	{
+		SQLInserts si = new SQLInserts();
+		si.createRows(m_dbConn);
 	}
 }
