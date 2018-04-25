@@ -3,7 +3,9 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.sql.Connection;
-
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -18,9 +20,14 @@ import javax.swing.SwingConstants;
  */
 public class CharacterGUI extends JFrame
 {
+	/**
+	 * Instance variables that contain all of the necessary GUI features and
+	 * connection to the database.
+	 */
 	JButton[] southButtons;
 	JButton selectButton;
 	JLabel tableName, imageLabel;
+	JTextField nameTF, userTF, locIDTF, maxHPTF, curHPTF, strengthTF, staminaTF;
 	JComboBox<String> dropBox;
 	Connection m_dbConn;
 
@@ -36,8 +43,8 @@ public class CharacterGUI extends JFrame
 
 		tableName = new JLabel("CHARACTER", SwingConstants.CENTER);
 
-		String[] characterNames =
-		{ "Avatar", "Gandalf", "Merlin" };
+		String[] characterNames = queryDatabaseForPrimaryKeys(m_dbConn);
+
 		dropBox = new JComboBox<String>(characterNames);
 
 		selectButton = new JButton("Select");
@@ -49,28 +56,80 @@ public class CharacterGUI extends JFrame
 
 		add("North", northPanel);
 
-		JPanel westPanel = new JPanel(new GridLayout(10, 1));
-
+		JPanel westPanel = new JPanel(new GridLayout(8, 1));
+		ResultSet rs = queryDatabaseForDataRow(m_dbConn, characterNames[0]);
 		westPanel.add(new JLabel("Name"));
-		westPanel.add(new JTextField("Text"));
+		try
+		{
+			nameTF = new JTextField(rs.getString("P_Name"));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		westPanel.add(nameTF);
+
 		westPanel.add(new JLabel("Player Username"));
-		westPanel.add(new JTextField("Text"));
+		try
+		{
+			userTF = new JTextField(rs.getString("P_Username"));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		westPanel.add(userTF);
+
 		westPanel.add(new JLabel("Location ID"));
-		westPanel.add(new JTextField("Text"));
-		westPanel.add(new JLabel("Bag"));
-		westPanel.add(new JTextField("Text"));
+		try
+		{
+			locIDTF = new JTextField(rs.getString("L_ID"));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		westPanel.add(locIDTF);
+
 		westPanel.add(new JLabel("Max HP"));
-		westPanel.add(new JTextField("Text"));
+		try
+		{
+			maxHPTF = new JTextField(rs.getString("P_Max_HP"));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		westPanel.add(maxHPTF);
 
 		add("West", westPanel);
 
-		JPanel eastPanel = new JPanel(new GridLayout(6, 1));
+		JPanel eastPanel = new JPanel(new GridLayout(8, 1));
 		eastPanel.add(new JLabel("Current HP"));
-		eastPanel.add(new JTextField("Text"));
+		try
+		{
+			curHPTF = new JTextField(rs.getString("P_Cur_HP"));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		eastPanel.add(curHPTF);
+
 		eastPanel.add(new JLabel("Strength"));
-		eastPanel.add(new JTextField("Text"));
+		try
+		{
+			strengthTF = new JTextField(rs.getString("P_Strength"));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		eastPanel.add(strengthTF);
+
 		eastPanel.add(new JLabel("Stamina"));
-		eastPanel.add(new JTextField("Text"));
+		try
+		{
+			staminaTF = new JTextField(rs.getString("P_Stamina"));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		eastPanel.add(staminaTF);
 
 		add("East", eastPanel);
 
@@ -87,6 +146,72 @@ public class CharacterGUI extends JFrame
 
 		pack();
 		setVisible(true);
+	}
+
+	/**
+	 * Retrieves a list of primary keys from the PLAYER_CHAR table.
+	 * @param conn The connection to the database.
+	 * @return The list of primary keys as a String array.
+	 */
+	public String[] queryDatabaseForPrimaryKeys(Connection conn)
+	{
+		ResultSet rs = null;
+		String selectStmt = "SELECT P_Name FROM PLAYER_CHAR";
+		String selectCount = "SELECT COUNT(*) FROM PLAYER_CHAR";
+		String[] data = null;
+
+		try
+		{
+			Statement stmt = conn.createStatement();
+			rs = stmt.executeQuery(selectCount);
+			int count = 1;
+			while (rs.next())
+			{
+				count = rs.getInt(1);
+			}
+
+			data = new String[count];
+
+			rs = stmt.executeQuery(selectStmt);
+			int i = 0;
+			while (rs.next() && i < data.length)
+			{
+				data[i] = rs.getString("P_Name");
+				i++;
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+
+		return data;
+	}
+
+	/**
+	 * Retrieves one row of data from the PLAYER_CHAR table using the primary
+	 * key.
+	 * @param conn The connection to the database.
+	 * @param pKey The value of the primary key that is used in the SELECT
+	 *            statement.
+	 * @return the Result Set that will contain that row of data.
+	 */
+	public ResultSet queryDatabaseForDataRow(Connection conn, String pKey)
+	{
+		ResultSet rs = null;
+		String selectStmt = "SELECT * FROM PLAYER_CHAR WHERE P_Name=\"" + pKey + "\"";
+
+		try
+		{
+			Statement stmt = conn.createStatement();
+
+			rs = stmt.executeQuery(selectStmt);
+			rs.next();
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+
+		return rs;
 	}
 
 }
