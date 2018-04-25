@@ -69,6 +69,7 @@ public class Runner
 
 		// runPartOne();
 		// runPartTwo();
+		runGUI();
 
 		try
 		{
@@ -117,5 +118,10 @@ public class Runner
 	{
 		SQLInserts si = new SQLInserts();
 		si.createRows(m_dbConn);
+	}
+	
+	public static void runGUI()
+	{
+		CharacterGUI gui = new CharacterGUI(m_dbConn);
 	}
 }
