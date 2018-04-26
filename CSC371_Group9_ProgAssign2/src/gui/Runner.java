@@ -44,17 +44,7 @@ public class Runner
 	public static void main(String[] args)
 	{
 		activateJDBC();
-		/**
-		 * Creates a connection to the database that you can then send commands
-		 * to.
-		 */
-		try
-		{
-			m_dbConn = DriverManager.getConnection(DB_LOCATION, LOGIN_NAME, PASSWORD);
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		createDBConnection();
 
 		/**
 		 * To get the meta data for the DB.
@@ -78,6 +68,42 @@ public class Runner
 		{
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Creates a connection to the database that you can then send commands to.
+	 */
+	public static void createDBConnection()
+	{
+
+		try
+		{
+			m_dbConn = DriverManager.getConnection(DB_LOCATION, LOGIN_NAME, PASSWORD);
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Getter for the database connection instance variable.
+	 * If the connection is null or closed, the connection 
+	 * will be recreated.
+	 * @return the Connection instance to the database.
+	 */
+	public static Connection getDBConnection()
+	{
+		try
+		{
+			if (m_dbConn == null || m_dbConn.isClosed())
+			{
+				createDBConnection();
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return m_dbConn;
 	}
 
 	/**
@@ -119,9 +145,12 @@ public class Runner
 		SQLInserts si = new SQLInserts();
 		si.createRows(m_dbConn);
 	}
-	
+
+	/**
+	 * Method that calls a GUI (right now, the character GUI).
+	 */
 	public static void runGUI()
 	{
-		CharacterGUI gui = new CharacterGUI(m_dbConn);
+		CharacterGUI gui = new CharacterGUI();
 	}
 }
