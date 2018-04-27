@@ -154,6 +154,7 @@ public class Runner
 		// CharacterGUI cgui = new CharacterGUI();
 		// ArmorGUI agui = new ArmorGUI();
 		// ManagerGUI magui = new ManagerGUI();
-		PlayerGUI pgui = new PlayerGUI();
+		// PlayerGUI pgui = new PlayerGUI();
+		LocationGUI lgui = new LocationGUI();
 	}
 }
