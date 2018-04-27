@@ -13,7 +13,8 @@ import part2.SQLInserts;
  * @author Aaron Gerber
  * @author Austin Smale
  * @author David Gautschi
- * @author Nick Rummel CSC371-01
+ * @author Nick Rummel
+ * CSC371-01
  */
 public class Runner
 {
@@ -86,9 +87,8 @@ public class Runner
 	}
 
 	/**
-	 * Getter for the database connection instance variable.
-	 * If the connection is null or closed, the connection 
-	 * will be recreated.
+	 * Getter for the database connection instance variable. If the connection
+	 * is null or closed, the connection will be recreated.
 	 * @return the Connection instance to the database.
 	 */
 	public static Connection getDBConnection()
@@ -147,11 +147,12 @@ public class Runner
 	}
 
 	/**
-	 * Method that calls a GUI (right now, the character GUI).
+	 * Method that calls a GUI (right now, the GUI being tested).
 	 */
 	public static void runGUI()
 	{
-		//CharacterGUI cgui = new CharacterGUI();
-		ArmorGUI agui = new ArmorGUI();
+		// CharacterGUI cgui = new CharacterGUI();
+		// ArmorGUI agui = new ArmorGUI();
+		ManagerGUI magui = new ManagerGUI();
 	}
 }
