@@ -303,9 +303,19 @@ public class CharacterGUI extends JFrame implements ActionListener
 		{
 			int index = dropBox.getSelectedIndex();
 			curPK = characterNames[index];
+			PreparedStatement stmt;
+			try
+			{
+				stmt = Runner.getDBConnection().prepareStatement("DELETE FROM PLAYER_CHAR WHERE P_Name=\"" + curPK + "\"");
+				stmt.executeUpdate();
+			} catch (SQLException e1)
+			{
+				e1.printStackTrace();
+			}
+			curPK = null;
 			getContentPane().removeAll();
 			updateGUI(Runner.getDBConnection());
-			dropBox.setSelectedIndex(index);
+			dropBox.setSelectedIndex(0);
 			getContentPane().revalidate();
 			getContentPane().repaint();
 		}
@@ -329,9 +339,9 @@ public class CharacterGUI extends JFrame implements ActionListener
 				stmt.setString(6, userTF.getText().trim());
 				stmt.setInt(7, Integer.parseInt(locIDTF.getText().trim()));
 				stmt.executeUpdate();
-			} catch (SQLException e1)
+			} catch (SQLException e3)
 			{
-				e1.printStackTrace();
+				e3.printStackTrace();
 			}
 			curPK = null;
 			getContentPane().removeAll();
