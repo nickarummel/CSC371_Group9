@@ -19,7 +19,8 @@ import javax.swing.SwingConstants;
 
 /**
  * GUI for the PLAYER_CHAR table.
- * @author Nick Rummel CSC371
+ * @author Nick Rummel
+ * CSC371
  */
 public class CharacterGUI extends JFrame implements ActionListener
 {
@@ -53,9 +54,11 @@ public class CharacterGUI extends JFrame implements ActionListener
 	 */
 	public void updateGUI(Connection m_dbConn)
 	{
+		// Reset content pane before building it
 		getContentPane().removeAll();
 		setLayout(new BorderLayout());
 
+		// Get primary keys and build the drop down box
 		characterNames = queryDatabaseForPrimaryKeys(m_dbConn);
 
 		tableName = new JLabel("CHARACTER", SwingConstants.CENTER);
@@ -65,6 +68,8 @@ public class CharacterGUI extends JFrame implements ActionListener
 		selectButton = new JButton("Select");
 		selectButton.addActionListener(this);
 
+		// Add the table name, drop down box, and select button
+		// to the north panel
 		JPanel northPanel = new JPanel(new GridLayout(3, 1));
 		northPanel.add(tableName);
 		northPanel.add(dropBox);
@@ -77,6 +82,8 @@ public class CharacterGUI extends JFrame implements ActionListener
 
 		if (curPK != null && !(curPK.equals("(new entry)")))
 		{
+			// The user wants to view a current row of data from the table
+			// So add in blank text fields to both west and east panels
 			ResultSet rs = queryDatabaseForDataRow(m_dbConn, curPK);
 			westPanel.add(new JLabel("Name"));
 			try
@@ -153,6 +160,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 			add("East", eastPanel);
 		} else if (curPK != null && curPK.equals("(new entry)"))
 		{
+			// The user wants to add a new entry to the table
 			nameTF = new JTextField();
 			userTF = new JTextField();
 			locIDTF = new JTextField();
@@ -181,6 +189,8 @@ public class CharacterGUI extends JFrame implements ActionListener
 			add("East", eastPanel);
 
 		}
+
+		// Add the delete, update, and insert buttons to the bottom
 		JPanel southPanel = new JPanel(new GridLayout(1, 3));
 		southButtons = new JButton[3];
 		southButtons[0] = new JButton("Delete");
@@ -194,16 +204,22 @@ public class CharacterGUI extends JFrame implements ActionListener
 
 		if (curPK != null && curPK.equals("(new entry)"))
 		{
+			// Only the insert button can be clicked if the user
+			// wants to add a new entry to the table
 			southButtons[0].setEnabled(false);
 			southButtons[1].setEnabled(false);
 			southButtons[2].setEnabled(true);
 		} else if (curPK != null)
 		{
+			// Only the delete and update buttons can be clicked
+			// if the user wants to view a row of data from the table
 			southButtons[0].setEnabled(true);
 			southButtons[1].setEnabled(true);
 			southButtons[2].setEnabled(false);
 		} else
 		{
+			// When selecting a primary key from the drop box,
+			// all three buttons (delete, update, insert) are unavailable.
 			southButtons[0].setEnabled(false);
 			southButtons[1].setEnabled(false);
 			southButtons[2].setEnabled(false);
@@ -232,6 +248,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 
 		try
 		{
+			// Retrieve the count of primary keys in the table
 			Statement stmt = conn.createStatement();
 			rs = stmt.executeQuery(selectCount);
 			int count = 1;
@@ -242,6 +259,9 @@ public class CharacterGUI extends JFrame implements ActionListener
 
 			data = new String[count + 1];
 			data[0] = "(new entry)";
+
+			// Retrieve the primary keys from the table
+			// and store each one in an array of Strings
 			rs = stmt.executeQuery(selectStmt);
 			int i = 0;
 			while (rs.next() && i < data.length)
@@ -284,9 +304,14 @@ public class CharacterGUI extends JFrame implements ActionListener
 		return rs;
 	}
 
+	/**
+	 * Method that is invoked when an action occurs.
+	 * @param e The action that occurred. 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		// The select button was pressed
 		if (e.getSource() == selectButton)
 		{
 			int index = dropBox.getSelectedIndex();
@@ -296,6 +321,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 
 		}
 
+		// The delete button was pressed, so delete the current entry
 		if (e.getSource() == southButtons[0])
 		{
 			int index = dropBox.getSelectedIndex();
@@ -303,8 +329,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 			PreparedStatement stmt;
 			try
 			{
-				stmt = Runner.getDBConnection()
-						.prepareStatement("DELETE FROM PLAYER_CHAR WHERE P_Name=?");
+				stmt = Runner.getDBConnection().prepareStatement("DELETE FROM PLAYER_CHAR WHERE P_Name=?");
 				stmt.setString(1, curPK);
 				stmt.executeUpdate();
 			} catch (SQLException e1)
@@ -316,6 +341,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 			dropBox.setSelectedIndex(0);
 		}
 
+		// The update button was pressed, so update the values of each column
 		if (e.getSource() == southButtons[1])
 		{
 			int index = dropBox.getSelectedIndex();
@@ -323,8 +349,8 @@ public class CharacterGUI extends JFrame implements ActionListener
 			PreparedStatement stmt;
 			try
 			{
-				stmt = Runner.getDBConnection()
-						.prepareStatement("UPDATE PLAYER_CHAR SET P_Name=?, P_Max_HP=?, P_Cur_HP=?, P_Strength=?, P_Stamina=?, P_Username=?, L_ID=? WHERE P_Name=?");
+				stmt = Runner.getDBConnection().prepareStatement(
+						"UPDATE PLAYER_CHAR SET P_Name=?, P_Max_HP=?, P_Cur_HP=?, P_Strength=?, P_Stamina=?, P_Username=?, L_ID=? WHERE P_Name=?");
 				stmt.setString(1, nameTF.getText().trim());
 				stmt.setInt(2, Integer.parseInt(maxHPTF.getText().trim()));
 				stmt.setInt(3, Integer.parseInt(curHPTF.getText().trim()));
@@ -334,15 +360,16 @@ public class CharacterGUI extends JFrame implements ActionListener
 				stmt.setInt(7, Integer.parseInt(locIDTF.getText().trim()));
 				stmt.setString(8, curPK);
 				stmt.executeUpdate();
-			} catch (SQLException e1)
+			} catch (SQLException e2)
 			{
-				e1.printStackTrace();
+				e2.printStackTrace();
 			}
 			curPK = null;
 			updateGUI(Runner.getDBConnection());
 			dropBox.setSelectedIndex(0);
 		}
 
+		// The insert button was pressed, so add the data to the table
 		if (e.getSource() == southButtons[2])
 		{
 			PreparedStatement stmt;
@@ -363,7 +390,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 				e3.printStackTrace();
 			}
 			curPK = null;
-			
+
 			updateGUI(Runner.getDBConnection());
 			dropBox.setSelectedIndex(0);
 
