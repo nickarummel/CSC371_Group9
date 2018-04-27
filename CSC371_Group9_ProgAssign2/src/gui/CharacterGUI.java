@@ -53,6 +53,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 	 */
 	public void updateGUI(Connection m_dbConn)
 	{
+		getContentPane().removeAll();
 		setLayout(new BorderLayout());
 
 		characterNames = queryDatabaseForPrimaryKeys(m_dbConn);
@@ -150,16 +151,15 @@ public class CharacterGUI extends JFrame implements ActionListener
 			eastPanel.add(staminaTF);
 
 			add("East", eastPanel);
-		}
-		else if (curPK != null && curPK.equals("(new entry)"))
+		} else if (curPK != null && curPK.equals("(new entry)"))
 		{
 			nameTF = new JTextField();
-			userTF= new JTextField();
-			locIDTF= new JTextField();
-			maxHPTF= new JTextField();
-			curHPTF= new JTextField();
-			strengthTF = new JTextField(); 
-			staminaTF = new JTextField(); 
+			userTF = new JTextField();
+			locIDTF = new JTextField();
+			maxHPTF = new JTextField();
+			curHPTF = new JTextField();
+			strengthTF = new JTextField();
+			staminaTF = new JTextField();
 			westPanel.add(new JLabel("Name"));
 			westPanel.add(nameTF);
 			westPanel.add(new JLabel("Player Username"));
@@ -170,7 +170,6 @@ public class CharacterGUI extends JFrame implements ActionListener
 			westPanel.add(maxHPTF);
 
 			add("West", westPanel);
-
 
 			eastPanel.add(new JLabel("Current HP"));
 			eastPanel.add(curHPTF);
@@ -192,31 +191,31 @@ public class CharacterGUI extends JFrame implements ActionListener
 			southButtons[i].addActionListener(this);
 			southPanel.add(southButtons[i]);
 		}
-		
-		if(curPK != null && curPK.equals("(new entry)"))
+
+		if (curPK != null && curPK.equals("(new entry)"))
 		{
 			southButtons[0].setEnabled(false);
 			southButtons[1].setEnabled(false);
 			southButtons[2].setEnabled(true);
-		}
-		else if(curPK != null)
+		} else if (curPK != null)
 		{
 			southButtons[0].setEnabled(true);
 			southButtons[1].setEnabled(true);
 			southButtons[2].setEnabled(false);
-		}
-		else
+		} else
 		{
 			southButtons[0].setEnabled(false);
 			southButtons[1].setEnabled(false);
 			southButtons[2].setEnabled(false);
 		}
-		
+
 		add("South", southPanel);
 
 		pack();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+		getContentPane().revalidate();
+		getContentPane().repaint();
 	}
 
 	/**
@@ -292,45 +291,65 @@ public class CharacterGUI extends JFrame implements ActionListener
 		{
 			int index = dropBox.getSelectedIndex();
 			curPK = characterNames[index];
-			getContentPane().removeAll();
 			updateGUI(Runner.getDBConnection());
 			dropBox.setSelectedIndex(index);
-			getContentPane().revalidate();
-			getContentPane().repaint();
+
 		}
-		
-		if(e.getSource() == southButtons[0])
+
+		if (e.getSource() == southButtons[0])
 		{
 			int index = dropBox.getSelectedIndex();
 			curPK = characterNames[index];
 			PreparedStatement stmt;
 			try
 			{
-				stmt = Runner.getDBConnection().prepareStatement("DELETE FROM PLAYER_CHAR WHERE P_Name=\"" + curPK + "\"");
+				stmt = Runner.getDBConnection()
+						.prepareStatement("DELETE FROM PLAYER_CHAR WHERE P_Name=?");
+				stmt.setString(1, curPK);
 				stmt.executeUpdate();
 			} catch (SQLException e1)
 			{
 				e1.printStackTrace();
 			}
 			curPK = null;
-			getContentPane().removeAll();
 			updateGUI(Runner.getDBConnection());
 			dropBox.setSelectedIndex(0);
-			getContentPane().revalidate();
-			getContentPane().repaint();
 		}
-		
-		if(e.getSource() == southButtons[1])
+
+		if (e.getSource() == southButtons[1])
 		{
-			
+			int index = dropBox.getSelectedIndex();
+			curPK = characterNames[index];
+			PreparedStatement stmt;
+			try
+			{
+				stmt = Runner.getDBConnection()
+						.prepareStatement("UPDATE PLAYER_CHAR SET P_Name=?, P_Max_HP=?, P_Cur_HP=?, P_Strength=?, P_Stamina=?, P_Username=?, L_ID=? WHERE P_Name=?");
+				stmt.setString(1, nameTF.getText().trim());
+				stmt.setInt(2, Integer.parseInt(maxHPTF.getText().trim()));
+				stmt.setInt(3, Integer.parseInt(curHPTF.getText().trim()));
+				stmt.setInt(4, Integer.parseInt(strengthTF.getText().trim()));
+				stmt.setInt(5, Integer.parseInt(staminaTF.getText().trim()));
+				stmt.setString(6, userTF.getText().trim());
+				stmt.setInt(7, Integer.parseInt(locIDTF.getText().trim()));
+				stmt.setString(8, curPK);
+				stmt.executeUpdate();
+			} catch (SQLException e1)
+			{
+				e1.printStackTrace();
+			}
+			curPK = null;
+			updateGUI(Runner.getDBConnection());
+			dropBox.setSelectedIndex(0);
 		}
-		
-		if(e.getSource() == southButtons[2])
+
+		if (e.getSource() == southButtons[2])
 		{
 			PreparedStatement stmt;
 			try
 			{
-				stmt = Runner.getDBConnection().prepareStatement("INSERT INTO PLAYER_CHAR VALUES (?, ?, ?, ?, ?, ?, ?)");
+				stmt = Runner.getDBConnection()
+						.prepareStatement("INSERT INTO PLAYER_CHAR VALUES (?, ?, ?, ?, ?, ?, ?)");
 				stmt.setString(1, nameTF.getText().trim());
 				stmt.setInt(2, Integer.parseInt(maxHPTF.getText().trim()));
 				stmt.setInt(3, Integer.parseInt(curHPTF.getText().trim()));
@@ -344,11 +363,9 @@ public class CharacterGUI extends JFrame implements ActionListener
 				e3.printStackTrace();
 			}
 			curPK = null;
-			getContentPane().removeAll();
+			
 			updateGUI(Runner.getDBConnection());
 			dropBox.setSelectedIndex(0);
-			getContentPane().revalidate();
-			getContentPane().repaint();
 
 		}
 	}
