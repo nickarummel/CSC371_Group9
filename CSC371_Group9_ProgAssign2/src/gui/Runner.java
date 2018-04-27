@@ -151,6 +151,7 @@ public class Runner
 	 */
 	public static void runGUI()
 	{
-		CharacterGUI gui = new CharacterGUI();
+		//CharacterGUI cgui = new CharacterGUI();
+		ArmorGUI agui = new ArmorGUI();
 	}
 }

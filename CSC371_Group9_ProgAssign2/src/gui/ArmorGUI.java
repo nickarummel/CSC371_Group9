@@ -14,15 +14,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 /**
- * GUI for the PLAYER_CHAR table.
+ * GUI for the ARMOR table.
  * @author Nick Rummel
  * CSC371
  */
-public class CharacterGUI extends JFrame implements ActionListener
+public class ArmorGUI extends JFrame implements ActionListener
 {
 	/**
 	 * Instance variables that contain all of the necessary GUI features and
@@ -31,17 +32,18 @@ public class CharacterGUI extends JFrame implements ActionListener
 	protected JButton[] southButtons;
 	protected JButton selectButton;
 	protected JLabel tableName, imageLabel;
-	protected JTextField nameTF, userTF, locIDTF, maxHPTF, curHPTF, strengthTF, staminaTF;
+	protected JTextField arIDTF, imageTF, locWornTF, cNameTF, contIDTF, locIDTF;
+	protected JTextArea arDescTA;
 	protected JComboBox<String> dropBox;
 	protected JPanel northPanel, southPanel, eastPanel, westPanel;
-	protected String[] characterNames;
+	protected String[] armorID;
 	protected String curPK;
 
 	/**
-	 * Constructor of PLAYER_CHAR table GUI.
+	 * Constructor of ARMOR table GUI.
 	 * @param m_dbConn The database connection to query data.
 	 */
-	public CharacterGUI()
+	public ArmorGUI()
 	{
 		curPK = null;
 		updateGUI(Runner.getDBConnection());
@@ -59,11 +61,11 @@ public class CharacterGUI extends JFrame implements ActionListener
 		setLayout(new BorderLayout());
 
 		// Get primary keys and build the drop down box
-		characterNames = queryDatabaseForPrimaryKeys(m_dbConn);
+		armorID = queryDatabaseForPrimaryKeys(m_dbConn);
 
-		tableName = new JLabel("CHARACTER", SwingConstants.CENTER);
+		tableName = new JLabel("ARMOR", SwingConstants.CENTER);
 
-		dropBox = new JComboBox<String>(characterNames);
+		dropBox = new JComboBox<String>(armorID);
 
 		selectButton = new JButton("Select");
 		selectButton.addActionListener(this);
@@ -85,25 +87,25 @@ public class CharacterGUI extends JFrame implements ActionListener
 			// The user wants to view a current row of data from the table
 			// So add in blank text fields to both west and east panels
 			ResultSet rs = queryDatabaseForDataRow(m_dbConn, curPK);
-			westPanel.add(new JLabel("Name"));
+			westPanel.add(new JLabel("Armor ID"));
 			try
 			{
-				nameTF = new JTextField(rs.getString("P_Name"));
+				arIDTF = new JTextField(rs.getString("Ar_ID"));
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
-			westPanel.add(nameTF);
+			westPanel.add(arIDTF);
 
-			westPanel.add(new JLabel("Player Username"));
+			westPanel.add(new JLabel("Image File Name"));
 			try
 			{
-				userTF = new JTextField(rs.getString("P_Username"));
+				imageTF = new JTextField(rs.getString("Image"));
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
-			westPanel.add(userTF);
+			westPanel.add(imageTF);
 
 			westPanel.add(new JLabel("Location ID"));
 			try
@@ -115,76 +117,76 @@ public class CharacterGUI extends JFrame implements ActionListener
 			}
 			westPanel.add(locIDTF);
 
-			westPanel.add(new JLabel("Max HP"));
+			westPanel.add(new JLabel("Location Worn"));
 			try
 			{
-				maxHPTF = new JTextField(rs.getString("P_Max_HP"));
+				locWornTF = new JTextField(rs.getString("Location_Worn"));
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
-			westPanel.add(maxHPTF);
+			westPanel.add(locWornTF);
 
 			add("West", westPanel);
 
-			eastPanel.add(new JLabel("Current HP"));
+			eastPanel.add(new JLabel("Character Name"));
 			try
 			{
-				curHPTF = new JTextField(rs.getString("P_Cur_HP"));
+				cNameTF = new JTextField(rs.getString("C_Name"));
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
-			eastPanel.add(curHPTF);
+			eastPanel.add(cNameTF);
 
-			eastPanel.add(new JLabel("Strength"));
+			eastPanel.add(new JLabel("Container ID"));
 			try
 			{
-				strengthTF = new JTextField(rs.getString("P_Strength"));
+				contIDTF = new JTextField(rs.getString("Cont_ID"));
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
-			eastPanel.add(strengthTF);
+			eastPanel.add(contIDTF);
 
-			eastPanel.add(new JLabel("Stamina"));
+			eastPanel.add(new JLabel("Description"));
 			try
 			{
-				staminaTF = new JTextField(rs.getString("P_Stamina"));
+				arDescTA = new JTextArea(rs.getString("Ar_Description"));
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
-			eastPanel.add(staminaTF);
+			eastPanel.add(arDescTA);
 
 			add("East", eastPanel);
 		} else if (curPK != null && curPK.equals("(new entry)"))
 		{
 			// The user wants to add a new entry to the table
-			nameTF = new JTextField();
-			userTF = new JTextField();
+			arIDTF = new JTextField();
+			imageTF = new JTextField();
+			locWornTF = new JTextField();
+			cNameTF = new JTextField();
+			contIDTF = new JTextField();
 			locIDTF = new JTextField();
-			maxHPTF = new JTextField();
-			curHPTF = new JTextField();
-			strengthTF = new JTextField();
-			staminaTF = new JTextField();
-			westPanel.add(new JLabel("Name"));
-			westPanel.add(nameTF);
-			westPanel.add(new JLabel("Player Username"));
-			westPanel.add(userTF);
+			arDescTA = new JTextArea();
+			westPanel.add(new JLabel("Armor ID"));
+			westPanel.add(arIDTF);
+			westPanel.add(new JLabel("Image File Name"));
+			westPanel.add(imageTF);
 			westPanel.add(new JLabel("Location ID"));
 			westPanel.add(locIDTF);
-			westPanel.add(new JLabel("Max HP"));
-			westPanel.add(maxHPTF);
+			westPanel.add(new JLabel("Location Worn"));
+			westPanel.add(locWornTF);
 
 			add("West", westPanel);
 
-			eastPanel.add(new JLabel("Current HP"));
-			eastPanel.add(curHPTF);
-			eastPanel.add(new JLabel("Strength"));
-			eastPanel.add(strengthTF);
-			eastPanel.add(new JLabel("Stamina"));
-			eastPanel.add(staminaTF);
+			eastPanel.add(new JLabel("Character Name"));
+			eastPanel.add(cNameTF);
+			eastPanel.add(new JLabel("Container ID"));
+			eastPanel.add(contIDTF);
+			eastPanel.add(new JLabel("Description"));
+			eastPanel.add(arDescTA);
 
 			add("East", eastPanel);
 
@@ -235,15 +237,15 @@ public class CharacterGUI extends JFrame implements ActionListener
 	}
 
 	/**
-	 * Retrieves a list of primary keys from the PLAYER_CHAR table.
+	 * Retrieves a list of primary keys from the ARMOR table.
 	 * @param conn The connection to the database.
 	 * @return The list of primary keys as a String array.
 	 */
 	public String[] queryDatabaseForPrimaryKeys(Connection conn)
 	{
 		ResultSet rs = null;
-		String selectStmt = "SELECT P_Name FROM PLAYER_CHAR";
-		String selectCount = "SELECT COUNT(*) FROM PLAYER_CHAR";
+		String selectStmt = "SELECT Ar_ID FROM ARMOR";
+		String selectCount = "SELECT COUNT(*) FROM ARMOR";
 		String[] data = null;
 
 		try
@@ -266,7 +268,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 			int i = 0;
 			while (rs.next() && i < data.length)
 			{
-				data[i + 1] = rs.getString("P_Name");
+				data[i + 1] = rs.getString("Ar_ID");
 				i++;
 			}
 		} catch (SQLException e)
@@ -278,8 +280,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 	}
 
 	/**
-	 * Retrieves one row of data from the PLAYER_CHAR table using the primary
-	 * key.
+	 * Retrieves one row of data from the ARMOR table using the primary key.
 	 * @param conn The connection to the database.
 	 * @param pKey The value of the primary key that is used in the SELECT
 	 *            statement.
@@ -288,7 +289,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 	public ResultSet queryDatabaseForDataRow(Connection conn, String pKey)
 	{
 		ResultSet rs = null;
-		String selectStmt = "SELECT * FROM PLAYER_CHAR WHERE P_Name=\"" + pKey + "\"";
+		String selectStmt = "SELECT * FROM ARMOR WHERE Ar_ID=" + pKey;
 
 		try
 		{
@@ -306,7 +307,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 
 	/**
 	 * Method that is invoked when an action occurs.
-	 * @param e The action that occurred. 
+	 * @param e The action that occurred.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -315,7 +316,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 		if (e.getSource() == selectButton)
 		{
 			int index = dropBox.getSelectedIndex();
-			curPK = characterNames[index];
+			curPK = armorID[index];
 			updateGUI(Runner.getDBConnection());
 			dropBox.setSelectedIndex(index);
 
@@ -325,12 +326,12 @@ public class CharacterGUI extends JFrame implements ActionListener
 		if (e.getSource() == southButtons[0])
 		{
 			int index = dropBox.getSelectedIndex();
-			curPK = characterNames[index];
+			curPK = armorID[index];
 			PreparedStatement stmt;
 			try
 			{
-				stmt = Runner.getDBConnection().prepareStatement("DELETE FROM PLAYER_CHAR WHERE P_Name=?");
-				stmt.setString(1, curPK);
+				stmt = Runner.getDBConnection().prepareStatement("DELETE FROM ARMOR WHERE Ar_ID=?");
+				stmt.setInt(1, Integer.parseInt(curPK));
 				stmt.executeUpdate();
 			} catch (SQLException e1)
 			{
@@ -345,20 +346,20 @@ public class CharacterGUI extends JFrame implements ActionListener
 		if (e.getSource() == southButtons[1])
 		{
 			int index = dropBox.getSelectedIndex();
-			curPK = characterNames[index];
+			curPK = armorID[index];
 			PreparedStatement stmt;
 			try
 			{
 				stmt = Runner.getDBConnection().prepareStatement(
-						"UPDATE PLAYER_CHAR SET P_Name=?, P_Max_HP=?, P_Cur_HP=?, P_Strength=?, P_Stamina=?, P_Username=?, L_ID=? WHERE P_Name=?");
-				stmt.setString(1, nameTF.getText().trim());
-				stmt.setInt(2, Integer.parseInt(maxHPTF.getText().trim()));
-				stmt.setInt(3, Integer.parseInt(curHPTF.getText().trim()));
-				stmt.setInt(4, Integer.parseInt(strengthTF.getText().trim()));
-				stmt.setInt(5, Integer.parseInt(staminaTF.getText().trim()));
-				stmt.setString(6, userTF.getText().trim());
+						"UPDATE ARMOR SET Ar_ID=?, Image=?, Ar_Description=?, Location_Worn=?, C_Name=?, Cont_ID=?, L_ID=? WHERE Ar_ID=?");
+				stmt.setInt(1, Integer.parseInt(arIDTF.getText()));
+				stmt.setString(2, imageTF.getText().trim());
+				stmt.setString(3, arDescTA.getText().trim());
+				stmt.setString(4, locWornTF.getText().trim());
+				stmt.setString(5, cNameTF.getText().trim());
+				stmt.setInt(6, Integer.parseInt(contIDTF.getText()));
 				stmt.setInt(7, Integer.parseInt(locIDTF.getText().trim()));
-				stmt.setString(8, curPK);
+				stmt.setInt(8, Integer.parseInt(curPK));
 				stmt.executeUpdate();
 			} catch (SQLException e2)
 			{
@@ -375,14 +376,13 @@ public class CharacterGUI extends JFrame implements ActionListener
 			PreparedStatement stmt;
 			try
 			{
-				stmt = Runner.getDBConnection()
-						.prepareStatement("INSERT INTO PLAYER_CHAR VALUES (?, ?, ?, ?, ?, ?, ?)");
-				stmt.setString(1, nameTF.getText().trim());
-				stmt.setInt(2, Integer.parseInt(maxHPTF.getText().trim()));
-				stmt.setInt(3, Integer.parseInt(curHPTF.getText().trim()));
-				stmt.setInt(4, Integer.parseInt(strengthTF.getText().trim()));
-				stmt.setInt(5, Integer.parseInt(staminaTF.getText().trim()));
-				stmt.setString(6, userTF.getText().trim());
+				stmt = Runner.getDBConnection().prepareStatement("INSERT INTO ARMOR VALUES (?, ?, ?, ?, ?, ?, ?)");
+				stmt.setInt(1, Integer.parseInt(arIDTF.getText()));
+				stmt.setString(2, imageTF.getText().trim());
+				stmt.setString(3, arDescTA.getText().trim());
+				stmt.setString(4, locWornTF.getText().trim());
+				stmt.setString(5, cNameTF.getText().trim());
+				stmt.setInt(6, Integer.parseInt(contIDTF.getText()));
 				stmt.setInt(7, Integer.parseInt(locIDTF.getText().trim()));
 				stmt.executeUpdate();
 			} catch (SQLException e3)
