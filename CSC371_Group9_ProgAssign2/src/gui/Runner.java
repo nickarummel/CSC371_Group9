@@ -157,6 +157,7 @@ public class Runner
 		// PlayerGUI pgui = new PlayerGUI();
 		//LocationGUI lgui = new LocationGUI();
 		//ModeratorPermsGUI mgui = new ModeratorPermsGUI();
-		LeadsToGUI ltgui = new LeadsToGUI();
+		//LeadsToGUI ltgui = new LeadsToGUI();
+		CreatureGUI crgui = new CreatureGUI();
 	}
 }

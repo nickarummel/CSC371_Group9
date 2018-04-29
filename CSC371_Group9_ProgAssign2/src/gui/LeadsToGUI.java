@@ -18,11 +18,7 @@ import javax.swing.SwingConstants;
 import java.awt.GridLayout;
 
 /**
- * The GUI class for Moderator Permissions
- * Most of this code is similar due to the intention of keeping the same style as the other classes
- * Changes are mostly made where needed, such as in the DB calls and to match the structure to the
- * mock up of the GUI made in homework 5. This is the same structure as ManagerPermsGUI, and as
- * such, the code was left the same aside from updating references to Manager with Moderator.
+ * The GUI class for Location connections
  * @author Aaron Gerber
  */
 public class LeadsToGUI  extends JFrame implements ActionListener
