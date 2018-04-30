@@ -186,7 +186,7 @@ public class RelatesToGUI  extends JFrame implements ActionListener
 		add("South", southPanel);
 		
 		pack();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setVisible(true);
 		getContentPane().revalidate();
 		getContentPane().repaint();
@@ -416,5 +416,12 @@ public class RelatesToGUI  extends JFrame implements ActionListener
 
 		}
 	}
-	
+
+	/**
+	 * Allow the GUI to be toggled on and off
+	 */
+	public void toggle()
+	{
+		setVisible(!this.isShowing());
+	}
 }

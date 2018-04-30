@@ -18,27 +18,26 @@ import javax.swing.SwingConstants;
 import java.awt.GridLayout;
 
 /**
- * The GUI class for Manager Permissions
- * Most of this code is similar due to the intention of keeping the same style as the other classes
- * Changes are mostly made where needed, such as in the DB calls and to match the structure to the
+ * The GUI class for Manager Permissions Most of this code is similar due to the
+ * intention of keeping the same style as the other classes Changes are mostly
+ * made where needed, such as in the DB calls and to match the structure to the
  * mock up of the GUI made in homework 5.
  * @author Aaron Gerber
  */
-public class ManagerPermsGUI  extends JFrame implements ActionListener
+public class ManagerPermsGUI extends JFrame implements ActionListener
 {
-	//The string fields needed.
-	String [] manUsernames;
+	// The string fields needed.
+	String[] manUsernames;
 	String curUsername;
-	
-	//The GUI objects needed.
+
+	// The GUI objects needed.
 	protected JButton[] southButtons;
 	protected JTextField manUserTF, permTF;
 	protected JLabel tableName, imageLabel;
 	protected JComboBox<String> dropBox;
 	protected JPanel northPanel, southPanel, centerPanel;
 	protected JButton selectButton;
-	
-	
+
 	public ManagerPermsGUI()
 	{
 		curUsername = null;
@@ -46,7 +45,8 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 	}
 
 	/**
-	 * Updates the GUI with the correct information from the database when called.
+	 * Updates the GUI with the correct information from the database when
+	 * called.
 	 * @param m_dbConn
 	 */
 	public void updateGUI(Connection m_dbConn)
@@ -57,7 +57,7 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 
 		// Get primary keys and build the drop down box
 		manUsernames = queryDatabaseForPrimaryKeys(m_dbConn);
-		
+
 		tableName = new JLabel("MANAGER PERMISSIONS", SwingConstants.CENTER);
 
 		dropBox = new JComboBox<String>(manUsernames);
@@ -72,9 +72,9 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 		northPanel.add(dropBox);
 		northPanel.add(selectButton);
 		add("North", northPanel);
-		
+
 		centerPanel = new JPanel(new GridLayout(6, 1));
-		
+
 		if (curUsername != null && !(curUsername.equals("(new entry)")))
 		{
 			// The user wants to view a current row of data from the table
@@ -89,7 +89,7 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 				e.printStackTrace();
 			}
 			centerPanel.add(manUserTF);
-			
+
 			centerPanel.add(new JLabel("Manager Permissions"));
 			try
 			{
@@ -101,8 +101,7 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 			centerPanel.add(permTF);
 
 			add("Center", centerPanel);
-		} 
-		else if (curUsername != null && curUsername.equals("(new entry)"))
+		} else if (curUsername != null && curUsername.equals("(new entry)"))
 		{
 			// The user wants to add a new entry to the table
 			manUserTF = new JTextField();
@@ -113,7 +112,7 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 			centerPanel.add(permTF);
 			add("Center", centerPanel);
 		}
-		
+
 		// Add the delete, update, and insert buttons to the bottom
 		JPanel southPanel = new JPanel(new GridLayout(1, 3));
 		southButtons = new JButton[3];
@@ -125,7 +124,7 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 			southButtons[i].addActionListener(this);
 			southPanel.add(southButtons[i]);
 		}
-		
+
 		if (curUsername != null && curUsername.equals("(new entry)"))
 		{
 			// Only the insert button can be clicked if the user
@@ -149,21 +148,22 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 			southButtons[2].setEnabled(false);
 		}
 		add("South", southPanel);
-		
+
 		pack();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setVisible(true);
 		getContentPane().revalidate();
 		getContentPane().repaint();
 	}
-	
+
 	/**
-	 * Grabs the results of the query being made, with reference being what column in the database is being accessed.
+	 * Grabs the results of the query being made, with reference being what
+	 * column in the database is being accessed.
 	 * @param m_dbconn
 	 * @param col
 	 * @return results of the query
 	 */
-	private ResultSet queryDatabaseForDataRow(Connection m_dbconn, String col) 
+	private ResultSet queryDatabaseForDataRow(Connection m_dbconn, String col)
 	{
 		ResultSet rs = null;
 		String selectStmt = "SELECT * FROM MAN_PERMS WHERE Man_Username=\"" + col + "\"";
@@ -183,7 +183,8 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 	}
 
 	/**
-	 * Grabs the primary keys that will be used to find information in the database
+	 * Grabs the primary keys that will be used to find information in the
+	 * database
 	 * @param m_dbconn
 	 * @return set of strings for the drop down menu
 	 */
@@ -193,7 +194,7 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 		String selectStmt = "SELECT Man_Username FROM MAN_PERMS";
 		String selectCount = "SELECT COUNT(*) FROM MAN_PERMS";
 		String[] data = null;
-		
+
 		try
 		{
 			// Retrieve the count of primary keys in the table
@@ -205,7 +206,8 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 				count = rs.getInt(1);
 			}
 
-			//Dynamically create the array so as to not worry about the number of items
+			// Dynamically create the array so as to not worry about the number
+			// of items
 			data = new String[count + 1];
 			data[0] = "(new entry)";
 
@@ -225,12 +227,12 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 
 		return data;
 	}
-	
+
 	/**
 	 * Tells the GUI when to update and how to update.
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) 
+	public void actionPerformed(ActionEvent e)
 	{
 		// The select button was pressed
 		if (e.getSource() == selectButton)
@@ -270,8 +272,8 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 			PreparedStatement stmt;
 			try
 			{
-				stmt = Runner.getDBConnection().prepareStatement(
-						"UPDATE MAN_PERMS SET Man_Username=?, Man_Permission=? WHERE Man_Username=?");
+				stmt = Runner.getDBConnection()
+						.prepareStatement("UPDATE MAN_PERMS SET Man_Username=?, Man_Permission=? WHERE Man_Username=?");
 				stmt.setString(1, manUserTF.getText().trim());
 				stmt.setString(2, permTF.getText().trim());
 				stmt.setString(3, curUsername);
@@ -306,5 +308,12 @@ public class ManagerPermsGUI  extends JFrame implements ActionListener
 
 		}
 	}
-	
+
+	/**
+	 * Allow the GUI to be toggled on and off
+	 */
+	public void toggle()
+	{
+		setVisible(!this.isShowing());
+	}
 }
