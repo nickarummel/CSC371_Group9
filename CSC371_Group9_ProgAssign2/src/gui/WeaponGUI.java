@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -173,14 +171,7 @@ public class WeaponGUI extends JFrame implements ActionListener
 		// pack everything and set visible
 		pack();
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		this.addWindowListener(new WindowAdapter()
-		{
-			public void windowClosing(WindowEvent we)
-			{
-				Runner.getMainMenuGUI().toggle();
-
-			}
-		});
+		setVisible(true);
 		getContentPane().revalidate();
 		getContentPane().repaint();
 	}

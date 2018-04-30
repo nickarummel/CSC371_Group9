@@ -15,8 +15,7 @@ import javax.swing.SwingConstants;
 
 /**
  * The main GUI that allows each table's GUI to be opened.
- * @author Nick Rummel
- * CSC371
+ * @author Nick Rummel CSC371
  */
 public class MainMenuGUI extends JFrame implements ActionListener
 {
@@ -99,25 +98,41 @@ public class MainMenuGUI extends JFrame implements ActionListener
 	}
 
 	/**
-	 * Initializes the instance of each GUI.
+	 * Retrieves a list of primary keys from the MANAGER table.
+	 * @param conn The connection to the database.
 	 */
 	public void initializeGUIS()
 	{
 		abGUI = new AbilityGUI();
+//		abGUI.toggle();
 		arGUI = new ArmorGUI();
+//		arGUI.toggle();
 		chGUI = new CharacterGUI();
+//		chGUI.toggle();
 		concGUI = new ConContainsGUI();
+//		concGUI.toggle();
 		contGUI = new ContainerGUI();
+//		contGUI.toggle();
 		crGUI = new CreatureGUI();
+//		crGUI.toggle();
 		ltGUI = new LeadsToGUI();
+//		ltGUI.toggle();
 		locGUI = new LocationGUI();
+//		locGUI.toggle();
 		manGUI = new ManagerGUI();
+//		manGUI.toggle();
 		manpGUI = new ManagerPermsGUI();
+//		manpGUI.toggle();
 		modGUI = new ModeratorGUI();
+//		modGUI.toggle();
 		modpGUI = new ModeratorPermsGUI();
+//		modpGUI.toggle();
 		pGUI = new PlayerGUI();
+//		pGUI.toggle();
 		rtGUI = new RelatesToGUI();
+//		rtGUI.toggle();
 		wGUI = new WeaponGUI();
+//		wGUI.toggle();
 	}
 
 	/**
@@ -140,7 +155,6 @@ public class MainMenuGUI extends JFrame implements ActionListener
 				break;
 			case 1:
 				// add in AREA GUI
-				toggle();
 				break;
 			case 2:
 				// Armor GUI
@@ -164,11 +178,9 @@ public class MainMenuGUI extends JFrame implements ActionListener
 				break;
 			case 7:
 				// Add in CR_ITEMS GUI
-				toggle();
 				break;
 			case 8:
 				// Add in ITEMS GUI
-				toggle();
 				break;
 			case 9:
 				// Leads To GUI
@@ -204,11 +216,9 @@ public class MainMenuGUI extends JFrame implements ActionListener
 				break;
 			case 17:
 				// Add Relate With Creature GUI
-				toggle();
 				break;
 			case 18:
 				// Add Skilled With GUI
-				toggle();
 				break;
 			case 19:
 				// Weapon GUI
