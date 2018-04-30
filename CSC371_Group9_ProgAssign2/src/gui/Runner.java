@@ -159,6 +159,10 @@ public class Runner
 		//ModeratorPermsGUI mgui = new ModeratorPermsGUI();
 		//LeadsToGUI ltgui = new LeadsToGUI();
 		//CreatureGUI crgui = new CreatureGUI();
-		 ContainerGUI congui = new ContainerGUI();
+//		ContainerGUI congui = new ContainerGUI();
+//		WeaponGUI wepgui = new WeaponGUI();
+//		AbilityGUI abgui = new AbilityGUI();
+//		ModeratorGUI modgui = new ModeratorGUI();
+		ConContainsGUI concontgui = new ConContainsGUI();
 	}
 }
