@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,7 +41,6 @@ public class CharacterGUI extends JFrame implements ActionListener
 
 	/**
 	 * Constructor of PLAYER_CHAR table GUI.
-	 * @param m_dbConn The database connection to query data.
 	 */
 	public CharacterGUI()
 	{
@@ -228,8 +229,15 @@ public class CharacterGUI extends JFrame implements ActionListener
 		add("South", southPanel);
 
 		pack();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent we)
+			{
+				Runner.getMainMenuGUI().toggle();
+
+			}
+		});
 		getContentPane().revalidate();
 		getContentPane().repaint();
 	}
@@ -306,7 +314,7 @@ public class CharacterGUI extends JFrame implements ActionListener
 
 	/**
 	 * Method that is invoked when an action occurs.
-	 * @param e The action that occurred. 
+	 * @param e The action that occurred.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -395,6 +403,14 @@ public class CharacterGUI extends JFrame implements ActionListener
 			dropBox.setSelectedIndex(0);
 
 		}
+	}
+
+	/**
+	 * Allow the GUI to be toggled on and off
+	 */
+	public void toggle()
+	{
+		setVisible(!this.isShowing());
 	}
 
 }

@@ -39,6 +39,12 @@ public class Runner
 	protected static Connection m_dbConn = null;
 
 	/**
+	 * Instance variable to store the Main Menu GUI
+	 */
+	protected static MainMenuGUI mmgui;
+	
+	
+	/**
 	 * Main method to run this project
 	 * @param args arguments
 	 */
@@ -151,18 +157,24 @@ public class Runner
 	 */
 	public static void runGUI()
 	{
-		// CharacterGUI cgui = new CharacterGUI();
-		// ArmorGUI agui = new ArmorGUI();
-		// ManagerGUI magui = new ManagerGUI();
-		// PlayerGUI pgui = new PlayerGUI();
-		//LocationGUI lgui = new LocationGUI();
-		//ModeratorPermsGUI mgui = new ModeratorPermsGUI();
-		//LeadsToGUI ltgui = new LeadsToGUI();
-		//CreatureGUI crgui = new CreatureGUI();
+//		CharacterGUI cgui = new CharacterGUI();
+//		ArmorGUI agui = new ArmorGUI();
+//		ManagerGUI magui = new ManagerGUI();
+//		PlayerGUI pgui = new PlayerGUI();
+//		LocationGUI lgui = new LocationGUI();
+//		ModeratorPermsGUI mgui = new ModeratorPermsGUI();
+//		LeadsToGUI ltgui = new LeadsToGUI();
+//		CreatureGUI crgui = new CreatureGUI();
 //		ContainerGUI congui = new ContainerGUI();
 //		WeaponGUI wepgui = new WeaponGUI();
 //		AbilityGUI abgui = new AbilityGUI();
 //		ModeratorGUI modgui = new ModeratorGUI();
-		ConContainsGUI concontgui = new ConContainsGUI();
+//		ConContainsGUI concontgui = new ConContainsGUI();
+		mmgui = new MainMenuGUI();
+	}
+	
+	public static MainMenuGUI getMainMenuGUI()
+	{
+		return mmgui;
 	}
 }

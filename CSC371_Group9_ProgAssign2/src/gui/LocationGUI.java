@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,7 +41,6 @@ public class LocationGUI extends JFrame implements ActionListener
 
 	/**
 	 * Constructor of LOCATION table GUI.
-	 * @param m_dbConn The database connection to query data.
 	 */
 	public LocationGUI()
 	{
@@ -170,8 +171,14 @@ public class LocationGUI extends JFrame implements ActionListener
 		add("South", southPanel);
 
 		pack();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent we)
+			{
+				Runner.getMainMenuGUI().toggle();
+			}
+		});
 		getContentPane().revalidate();
 		getContentPane().repaint();
 	}
@@ -329,4 +336,11 @@ public class LocationGUI extends JFrame implements ActionListener
 		}
 	}
 
+	/**
+	 * Allow the GUI to be toggled on and off
+	 */
+	public void toggle()
+	{
+		setVisible(!this.isShowing());
+	}
 }
