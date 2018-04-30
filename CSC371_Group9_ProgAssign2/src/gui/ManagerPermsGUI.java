@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -151,7 +153,14 @@ public class ManagerPermsGUI extends JFrame implements ActionListener
 
 		pack();
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		setVisible(true);
+		this.addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent we)
+			{
+				Runner.getMainMenuGUI().toggle();
+
+			}
+		});
 		getContentPane().revalidate();
 		getContentPane().repaint();
 	}
