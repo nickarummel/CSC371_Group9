@@ -57,7 +57,7 @@ public class ContainerGUI extends JFrame implements ActionListener
 		setLayout(new BorderLayout());
 
 		// create panels
-		top = new JPanel(new GridLayout(3, 1));
+		top = new JPanel(new GridLayout(9, 1));
 		middle = new JPanel(new GridLayout(5, 2));
 		bottom = new JPanel(new GridLayout(1, 3));
 		// create buttons
@@ -82,6 +82,12 @@ public class ContainerGUI extends JFrame implements ActionListener
 		top.add(tableName);
 		top.add(dropDownMenu);
 		top.add(selectBtn);
+		top.add(new JLabel("Use the menu to select an entry."));
+		top.add(new JLabel("Clicking Select will populate the fields below."));
+		top.add(new JLabel("You can either update the current entry and click"));
+		top.add(new JLabel("update to save, or just simply delete the entry."));
+		top.add(new JLabel("If new item, it will leave the fields empty."));
+		top.add(new JLabel("Click insert will add the new item to the database."));
 		add("North", top);
 		// add(top);
 

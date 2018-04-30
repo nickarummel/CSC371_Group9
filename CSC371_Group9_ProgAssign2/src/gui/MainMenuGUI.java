@@ -27,7 +27,6 @@ public class MainMenuGUI extends JFrame implements ActionListener
 	protected JLabel tableName, instructionLabel;
 	protected JComboBox<String> dropBox;
 	protected JPanel northPanel;
-	protected List<? extends JFrame> guis;
 	protected final String[] guiNames =
 	{ "ABILITY", "AREA", "ARMOR", "CHARACTER", "CONTAINER", "CON_CONTAIN", "CREATURE", "CR_ITEMS", "ITEMS", "LEADS_TO",
 			"LOCATION", "MANAGER", "MANAGER PERMISSIONS", "MODERATOR", "MODERATOR PERMISSIONS", "PLAYER",
