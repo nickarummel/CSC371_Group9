@@ -33,7 +33,7 @@ public class ArmorGUI extends JFrame implements ActionListener
 	 */
 	protected JButton[] southButtons;
 	protected JButton selectButton;
-	protected JLabel tableName, imageLabel;
+	protected JLabel tableName, instructionLabel;
 	protected JTextField arIDTF, imageTF, locWornTF, cNameTF, contIDTF, locIDTF;
 	protected JTextArea arDescTA;
 	protected JComboBox<String> dropBox;
@@ -73,11 +73,18 @@ public class ArmorGUI extends JFrame implements ActionListener
 
 		// Add the table name, drop down box, and select button
 		// to the north panel
-		JPanel northPanel = new JPanel(new GridLayout(3, 1));
+		JPanel northPanel = new JPanel(new GridLayout(9, 1));
 		northPanel.add(tableName);
 		northPanel.add(dropBox);
 		northPanel.add(selectButton);
 
+		northPanel.add(new JLabel("Choose which entry to view or edit. Then click \"Select\"."));
+		northPanel.add(new JLabel("Once an entry is selected, change any details and click"));
+		northPanel.add(new JLabel("\"Update\" to save the changes."));
+		northPanel.add(new JLabel("To remove the the chosen entry, click \"Delete\"."));
+		northPanel.add(new JLabel("By choosing (new entry), a new entry of data can be added"));
+		northPanel.add(new JLabel("to the table. Fill out the form and click \"Insert\"."));
+		
 		add("North", northPanel);
 
 		westPanel = new JPanel(new GridLayout(8, 1));
@@ -204,7 +211,6 @@ public class ArmorGUI extends JFrame implements ActionListener
 			southButtons[i].addActionListener(this);
 			southPanel.add(southButtons[i]);
 		}
-
 		if (curPK != null && curPK.equals("(new entry)"))
 		{
 			// Only the insert button can be clicked if the user
@@ -232,14 +238,7 @@ public class ArmorGUI extends JFrame implements ActionListener
 
 		pack();
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		this.addWindowListener(new WindowAdapter()
-		{
-			public void windowClosing(WindowEvent we)
-			{
-				Runner.getMainMenuGUI().toggle();
-
-			}
-		});
+		setVisible(true);
 		getContentPane().revalidate();
 		getContentPane().repaint();
 	}

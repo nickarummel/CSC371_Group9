@@ -153,23 +153,10 @@ public class Runner
 	}
 
 	/**
-	 * Method that calls a GUI (right now, the GUI being tested).
+	 * Method that calls the Main Menu GUI.
 	 */
 	public static void runGUI()
 	{
-//		CharacterGUI cgui = new CharacterGUI();
-//		ArmorGUI agui = new ArmorGUI();
-//		ManagerGUI magui = new ManagerGUI();
-//		PlayerGUI pgui = new PlayerGUI();
-//		LocationGUI lgui = new LocationGUI();
-//		ModeratorPermsGUI mgui = new ModeratorPermsGUI();
-//		LeadsToGUI ltgui = new LeadsToGUI();
-//		CreatureGUI crgui = new CreatureGUI();
-//		ContainerGUI congui = new ContainerGUI();
-//		WeaponGUI wepgui = new WeaponGUI();
-//		AbilityGUI abgui = new AbilityGUI();
-//		ModeratorGUI modgui = new ModeratorGUI();
-//		ConContainsGUI concontgui = new ConContainsGUI();
 		mmgui = new MainMenuGUI();
 	}
 	

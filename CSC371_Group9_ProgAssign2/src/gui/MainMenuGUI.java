@@ -104,35 +104,35 @@ public class MainMenuGUI extends JFrame implements ActionListener
 	public void initializeGUIS()
 	{
 		abGUI = new AbilityGUI();
-//		abGUI.toggle();
+		abGUI.toggle();
 		arGUI = new ArmorGUI();
-//		arGUI.toggle();
+		arGUI.toggle();
 		chGUI = new CharacterGUI();
-//		chGUI.toggle();
+		chGUI.toggle();
 		concGUI = new ConContainsGUI();
-//		concGUI.toggle();
+		concGUI.toggle();
 		contGUI = new ContainerGUI();
-//		contGUI.toggle();
+		contGUI.toggle();
 		crGUI = new CreatureGUI();
-//		crGUI.toggle();
+		crGUI.toggle();
 		ltGUI = new LeadsToGUI();
-//		ltGUI.toggle();
+		ltGUI.toggle();
 		locGUI = new LocationGUI();
-//		locGUI.toggle();
+		locGUI.toggle();
 		manGUI = new ManagerGUI();
-//		manGUI.toggle();
+		manGUI.toggle();
 		manpGUI = new ManagerPermsGUI();
-//		manpGUI.toggle();
+		manpGUI.toggle();
 		modGUI = new ModeratorGUI();
-//		modGUI.toggle();
+		modGUI.toggle();
 		modpGUI = new ModeratorPermsGUI();
-//		modpGUI.toggle();
+		modpGUI.toggle();
 		pGUI = new PlayerGUI();
-//		pGUI.toggle();
+		pGUI.toggle();
 		rtGUI = new RelatesToGUI();
-//		rtGUI.toggle();
+		rtGUI.toggle();
 		wGUI = new WeaponGUI();
-//		wGUI.toggle();
+		wGUI.toggle();
 	}
 
 	/**
@@ -146,7 +146,6 @@ public class MainMenuGUI extends JFrame implements ActionListener
 		if (e.getSource() == selectButton)
 		{
 			int index = dropBox.getSelectedIndex();
-			toggle();
 			switch (index)
 			{
 			case 0:
