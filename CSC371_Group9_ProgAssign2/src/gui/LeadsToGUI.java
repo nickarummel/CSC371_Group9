@@ -288,7 +288,7 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 			PreparedStatement stmt;
 			try
 			{
-				stmt = Runner.getDBConnection().prepareStatement("DELETE FROM MOD_PERMS WHERE Mod_Username=?");
+				stmt = Runner.getDBConnection().prepareStatement("DELETE FROM LEADS_TO WHERE Cur_Loc_ID=?");
 				stmt.setString(1, curLoc);
 				stmt.executeUpdate();
 			} catch (SQLException e1)
@@ -309,7 +309,7 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 			try
 			{
 				stmt = Runner.getDBConnection().prepareStatement(
-						"UPDATE MOD_PERMS SET Mod_Username=?, Mod_Permission=? WHERE Mod_Username=?");
+						"UPDATE LEADS_TO SET Cur_Loc_ID=?, Next_Loc_ID=? WHERE Cur_Loc_ID=?");
 				stmt.setString(1, curLocTF.getText().trim());
 				stmt.setString(2, nextLocTF.getText().trim());
 				stmt.setString(3, curLoc);
@@ -329,7 +329,7 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 			PreparedStatement stmt;
 			try
 			{
-				stmt = Runner.getDBConnection().prepareStatement("INSERT INTO MOD_PERMS VALUES (?, ?)");
+				stmt = Runner.getDBConnection().prepareStatement("INSERT INTO LEADS_TO VALUES (?, ?)");
 				stmt.setString(1, curLocTF.getText().trim());
 				stmt.setString(2, nextLocTF.getText().trim());
 				stmt.executeUpdate();

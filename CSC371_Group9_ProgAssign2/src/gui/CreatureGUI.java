@@ -19,6 +19,10 @@ import javax.swing.SwingConstants;
 
 /**
  * GUI for the Creature
+ * Most of this code is similar due to the intention of keeping the same style as the other classes
+ * Changes are mostly made where needed, such as in the DB calls and to match the structure to the
+ * mock up of the GUI made in homework 5. This is the same structure as CharacterGUI, and as
+ * such, the code was left the same aside from formatting changes needed to fit the Creature table.
  * @author Aaron Gerber
  */
 public class CreatureGUI extends JFrame implements ActionListener
