@@ -98,21 +98,6 @@ public class AbilityGUI extends JFrame implements ActionListener
 			amountTF = new JTextField();
 			attackCB = new JCheckBox();
 			statTF = new JTextField();
-			//add components to panel
-			middle.add(new JLabel("Ability ID:"));
-			middle.add(idTF);
-			middle.add(new JLabel("Repeat Time:"));
-			middle.add(repeatTF);
-			middle.add(new JLabel("Rate:"));
-			middle.add(rateTF);
-			middle.add(new JLabel("Exec. Time:"));
-			middle.add(timeTF);
-			middle.add(new JLabel("Dmg/Heal:"));
-			middle.add(amountTF);
-			middle.add(new JLabel("Is It An Attack:"));
-			middle.add(attackCB);
-			middle.add(new JLabel("Stat Target"));
-			middle.add(statTF);
 		}
 		// if a row from the table was selected
 		else
@@ -129,27 +114,26 @@ public class AbilityGUI extends JFrame implements ActionListener
 				attackCB = new JCheckBox();
 				attackCB.setSelected(row.getBoolean("Is_Attack"));
 				statTF = new JTextField(row.getString("Stat_Target"));
-				//add components to panel
-				middle.add(new JLabel("Ability ID:"));
-				middle.add(idTF);
-				middle.add(new JLabel("Repeat Time:"));
-				middle.add(repeatTF);
-				middle.add(new JLabel("Rate:"));
-				middle.add(rateTF);
-				middle.add(new JLabel("Exec. Time:"));
-				middle.add(timeTF);
-				middle.add(new JLabel("Dmg/Heal:"));
-				middle.add(amountTF);
-				middle.add(new JLabel("Is It An Attack:"));
-				middle.add(attackCB);
-				middle.add(new JLabel("Stat Target"));
-				middle.add(statTF);
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		
+		// add components to panel
+		middle.add(new JLabel("Ability ID:"));
+		middle.add(idTF);
+		middle.add(new JLabel("Repeat Time:"));
+		middle.add(repeatTF);
+		middle.add(new JLabel("Rate:"));
+		middle.add(rateTF);
+		middle.add(new JLabel("Exec. Time:"));
+		middle.add(timeTF);
+		middle.add(new JLabel("Dmg/Heal:"));
+		middle.add(amountTF);
+		middle.add(new JLabel("Is It An Attack:"));
+		middle.add(attackCB);
+		middle.add(new JLabel("Stat Target"));
+		middle.add(statTF);
 		add("West", middle);
 
 		// set bottom panel
@@ -333,5 +317,13 @@ public class AbilityGUI extends JFrame implements ActionListener
 
 		// recall display
 		display();
+	}
+
+	/**
+	 * Allow the GUI to be toggled on and off
+	 */
+	public void toggle()
+	{
+		setVisible(!this.isShowing());
 	}
 }

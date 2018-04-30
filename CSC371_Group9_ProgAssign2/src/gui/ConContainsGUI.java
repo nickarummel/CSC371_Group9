@@ -102,7 +102,7 @@ public class ConContainsGUI extends JFrame implements ActionListener
 			{
 				containerTF = new JTextField(row.getString("Container_ID"));
 				containeeTF = new JTextField(row.getString("Containee_ID"));
-				} catch (SQLException e)
+			} catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
@@ -283,5 +283,13 @@ public class ConContainsGUI extends JFrame implements ActionListener
 
 		// recall display
 		display();
+	}
+
+	/**
+	 * Allow the GUI to be toggled on and off
+	 */
+	public void toggle()
+	{
+		setVisible(!this.isShowing());
 	}
 }

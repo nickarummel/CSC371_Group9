@@ -101,24 +101,6 @@ public class WeaponGUI extends JFrame implements ActionListener
 			contTF = new JTextField();
 			abilTF = new JTextField();
 			locTF = new JTextField();
-
-			middle.add(new JLabel("Weapon ID:"));
-			middle.add(idTF);
-			middle.add(new JLabel("Image:"));
-			middle.add(imageTF);
-			middle.add(new JLabel("Description:"));
-			middle.add(descTA);
-			middle.add(new JLabel("Location Worn:"));
-			middle.add(wornTF);
-			middle.add(new JLabel("Character Name:"));
-			middle.add(nameTF);
-			middle.add(new JLabel("Container ID:"));
-			middle.add(contTF);
-			middle.add(new JLabel("Ability ID:"));
-			middle.add(abilTF);
-			middle.add(new JLabel("Location ID:"));
-			middle.add(locTF);
-			
 		}
 		// if a row from the table was selected
 		else
@@ -139,24 +121,23 @@ public class WeaponGUI extends JFrame implements ActionListener
 			{
 				e.printStackTrace();
 			}
-
-			middle.add(new JLabel("Weapon ID:"));
-			middle.add(idTF);
-			middle.add(new JLabel("Image:"));
-			middle.add(imageTF);
-			middle.add(new JLabel("Description:"));
-			middle.add(descTA);
-			middle.add(new JLabel("Location Worn:"));
-			middle.add(wornTF);
-			middle.add(new JLabel("Character Name:"));
-			middle.add(nameTF);
-			middle.add(new JLabel("Container ID:"));
-			middle.add(contTF);
-			middle.add(new JLabel("Ability ID:"));
-			middle.add(abilTF);
-			middle.add(new JLabel("Location ID:"));
-			middle.add(locTF);
 		}
+		middle.add(new JLabel("Weapon ID:"));
+		middle.add(idTF);
+		middle.add(new JLabel("Image:"));
+		middle.add(imageTF);
+		middle.add(new JLabel("Description:"));
+		middle.add(descTA);
+		middle.add(new JLabel("Location Worn:"));
+		middle.add(wornTF);
+		middle.add(new JLabel("Character Name:"));
+		middle.add(nameTF);
+		middle.add(new JLabel("Container ID:"));
+		middle.add(contTF);
+		middle.add(new JLabel("Ability ID:"));
+		middle.add(abilTF);
+		middle.add(new JLabel("Location ID:"));
+		middle.add(locTF);
 		add("West", middle);
 
 		// set bottom panel
@@ -189,7 +170,7 @@ public class WeaponGUI extends JFrame implements ActionListener
 
 		// pack everything and set visible
 		pack();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setVisible(true);
 		getContentPane().revalidate();
 		getContentPane().repaint();
@@ -342,5 +323,13 @@ public class WeaponGUI extends JFrame implements ActionListener
 
 		// recall display
 		display();
+	}
+
+	/**
+	 * Allow the GUI to be toggled on and off
+	 */
+	public void toggle()
+	{
+		setVisible(!this.isShowing());
 	}
 }

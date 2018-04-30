@@ -290,4 +290,12 @@ public class ModeratorGUI extends JFrame implements ActionListener
 		// recall display
 		display();
 	}
+
+	/**
+	 * Allow the GUI to be toggled on and off
+	 */
+	public void toggle()
+	{
+		setVisible(!this.isShowing());
+	}
 }

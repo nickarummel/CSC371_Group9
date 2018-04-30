@@ -95,17 +95,6 @@ public class ContainerGUI extends JFrame implements ActionListener
 			totalVolTF = new JTextField();
 			nameTF = new JTextField();
 			locIDTF = new JTextField();
-
-			middle.add(new JLabel("Container ID:"));
-			middle.add(idTF);
-			middle.add(new JLabel("Weight Limit:"));
-			middle.add(weightLimitTF);
-			middle.add(new JLabel("Total Volume:"));
-			middle.add(totalVolTF);
-			middle.add(new JLabel("Character Name:"));
-			middle.add(nameTF);
-			middle.add(new JLabel("Location ID:"));
-			middle.add(locIDTF);
 		}
 		// if a row from the table was selected
 		else
@@ -123,18 +112,17 @@ public class ContainerGUI extends JFrame implements ActionListener
 			{
 				e.printStackTrace();
 			}
-
-			middle.add(new JLabel("Container ID:"));
-			middle.add(idTF);
-			middle.add(new JLabel("Weight Limit:"));
-			middle.add(weightLimitTF);
-			middle.add(new JLabel("Total Volume:"));
-			middle.add(totalVolTF);
-			middle.add(new JLabel("Character Name:"));
-			middle.add(nameTF);
-			middle.add(new JLabel("Location ID:"));
-			middle.add(locIDTF);
 		}
+		middle.add(new JLabel("Container ID:"));
+		middle.add(idTF);
+		middle.add(new JLabel("Weight Limit:"));
+		middle.add(weightLimitTF);
+		middle.add(new JLabel("Total Volume:"));
+		middle.add(totalVolTF);
+		middle.add(new JLabel("Character Name:"));
+		middle.add(nameTF);
+		middle.add(new JLabel("Location ID:"));
+		middle.add(locIDTF);
 		add("West", middle);
 
 		// set bottom panel
@@ -167,7 +155,7 @@ public class ContainerGUI extends JFrame implements ActionListener
 
 		// pack everything and set visible
 		pack();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setVisible(true);
 		getContentPane().revalidate();
 		getContentPane().repaint();
@@ -314,5 +302,13 @@ public class ContainerGUI extends JFrame implements ActionListener
 
 		// recall display
 		display();
+	}
+
+	/**
+	 * Allow the GUI to be toggled on and off
+	 */
+	public void toggle()
+	{
+		setVisible(!this.isShowing());
 	}
 }
