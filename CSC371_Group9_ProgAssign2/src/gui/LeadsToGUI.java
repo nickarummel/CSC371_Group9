@@ -26,7 +26,7 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 	//The string fields needed.
 	String [] curLocations;
 	String [] nextLocations;
-	String curLoc;
+	String curPK;
 	String nextLoc;
 	
 	//The GUI objects needed.
@@ -34,13 +34,13 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 	protected JTextField curLocTF, nextLocTF;
 	protected JLabel tableName, imageLabel;
 	protected JComboBox<String> dropBox, dropBox_next;
-	protected JPanel titlePanel,dropBoxPanel, southPanel, centerPanel;
+	protected JPanel northPanel,westPanel, southPanel, eastPanel;
 	protected JButton selectButton;
 	
 	
 	public LeadsToGUI()
 	{
-		curLoc = null;
+		curPK = null;
 		updateGUI(Runner.getDBConnection());
 	}
 
@@ -69,85 +69,56 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 		titlePanel.add(tableName);
 		titlePanel.add(selectButton);
 		
+		//Instructions on how to use the GUI
+		northPanel.add(new JLabel("Use the drop down menu to select an entry."));
+		northPanel.add(new JLabel("Once an entry is selected, press the Select button"));
+		northPanel.add(new JLabel("to pull the information related to that entry."));
+		northPanel.add(new JLabel("You may then select the related data to this entry from"));
+		northPanel.add(new JLabel("the second drop down menu. Similarly to selecting the"));
+		northPanel.add(new JLabel("first entry, press the Select button to pull the complete"));
+		northPanel.add(new JLabel("information from this entry. At this point you may then"));
+		northPanel.add(new JLabel("delete or update the info displayed. If either drop down"));
+		northPanel.add(new JLabel("has (new entry) displayed, you may insert the input"));
+		northPanel.add(new JLabel("data into the database as a new entry."));
+		
 		add("North",titlePanel);
 		
-		if(curLoc!="(new data)")
-		{
-			ResultSet rs = null;
-			String selectStmt = "SELECT Next_Loc_ID FROM LEADS_TO WHERE Cur_Loc_ID =\"" +curLoc+ "\"";
-			String selectCount = "SELECT COUNT(*) FROM LEADS_TO WHERE Cur_Loc_ID = \""+curLoc+"\"";
-			nextLocations = null;
-			
-			try
-			{
-				// Retrieve the count of primary keys in the table
-				Statement stmt = m_dbConn.createStatement();
-				rs = stmt.executeQuery(selectCount);
-				int count = 1;
-				while (rs.next())
-				{
-					count = rs.getInt(1);
-				}
-
-				//Dynamically create the array so as to not worry about the number of items
-				nextLocations = new String[count + 1];
-				nextLocations[0] = "(new entry)";
-
-				// Retrieve the primary keys from the table
-				// and store each one in an array of Strings
-				rs = stmt.executeQuery(selectStmt);
-				int i = 0;
-				while (rs.next() && i < nextLocations.length)
-				{
-					nextLocations[i + 1] = rs.getString("Next_Loc_ID");
-					i++;
-				}
-			} catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-
-		}
-		else
-		{
-			nextLocations = new String [1];
-			nextLocations[0] = "(new data)";
-		}
+		
 		
 		dropBox_next = new JComboBox<String>(nextLocations);
 		
-		dropBoxPanel = new JPanel(new GridLayout( 2,2));
-		dropBoxPanel.add(new JLabel("Current Location"));
-		dropBoxPanel.add(dropBox);
-		dropBoxPanel.add(new JLabel("Next Location"));
-		dropBoxPanel.add(dropBox_next);
+		westPanel = new JPanel(new GridLayout( 2,2));
+		westPanel.add(new JLabel("Current Location"));
+		westPanel.add(dropBox);
+		westPanel.add(new JLabel("Next Location"));
+		westPanel.add(dropBox_next);
 		
-		add("West",dropBoxPanel);
+		add("West",westPanel);
 
-		centerPanel = new JPanel(new GridLayout(2,2));
-		if(curLoc!=null)
+		eastPanel = new JPanel(new GridLayout(2,2));
+		if(curPK!=null)
 		{
 			
-			centerPanel.add(new JLabel("Current Location"));
+			eastPanel.add(new JLabel("Current Location"));
 			
-			if(!(curLoc.equals("(new entry)")))
-				curLocTF = new JTextField(curLoc);
+			if(!(curPK.equals("(new entry)")))
+				curLocTF = new JTextField(curPK);
 			else
 				curLocTF = new JTextField("");
 			
-			centerPanel.add(curLocTF);
+			eastPanel.add(curLocTF);
 			
-			centerPanel.add(new JLabel("Next Location"));
+			eastPanel.add(new JLabel("Next Location"));
 			
 			if(!(nextLoc.equals("(new entry)")))
 				nextLocTF = new JTextField(nextLoc);
 			else
 				nextLocTF = new JTextField("");
 		
-			centerPanel.add(nextLocTF);
+			eastPanel.add(nextLocTF);
 			
 		}
-		add("East", centerPanel);
+		add("East", eastPanel);
 		
 		
 		// Add the delete, update, and insert buttons to the bottom
@@ -162,14 +133,14 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 			southPanel.add(southButtons[i]);
 		}
 		
-		if (curLoc != null && curLoc.equals("(new entry)"))
+		if (curPK != null && curPK.equals("(new entry)"))
 		{
 			// Only the insert button can be clicked if the user
 			// wants to add a new entry to the table
 			southButtons[0].setEnabled(false);
 			southButtons[1].setEnabled(false);
 			southButtons[2].setEnabled(true);
-		} else if (curLoc != null && nextLoc != null)
+		} else if (curPK != null && nextLoc != null)
 		{
 			// Only the delete and update buttons can be clicked
 			// if the user wants to view a row of data from the table
@@ -228,38 +199,104 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 		ResultSet rs = null;
 		String selectStmt = "SELECT Cur_Loc_ID FROM LEADS_TO";
 		String selectCount = "SELECT COUNT(*) FROM LEADS_TO";
-		String[] data = null;
+		String[] entry = null;
 		
-		try
+		if(curPK!=null&&!(curPK.equals("(new entry)")))
 		{
-			// Retrieve the count of primary keys in the table
-			Statement stmt = m_dbconn.createStatement();
-			rs = stmt.executeQuery(selectCount);
-			int count = 1;
-			while (rs.next())
+			String selectStmt1 = "SELECT Next_Loc_ID FROM LEADS_TO Cur_Loc_ID =\"" +curPK+ "\"";
+			String selectCount1 = "SELECT COUNT(*) FROM LEADS_TO WHERE Cur_Loc_ID = \""+curPK+"\"";
+			nextLoc = null;
+			
+			
+			try
 			{
-				count = rs.getInt(1);
+				// Retrieve the count of primary keys in the table
+				Statement stmt = m_dbconn.createStatement();
+				rs = stmt.executeQuery(selectCount1);
+				int count = 1;
+				while (rs.next())
+				{
+					count = rs.getInt(1);
+				}
+
+				//Dynamically create the array so as to not worry about the number of items
+				nextLocations = new String[count + 1];
+				nextLocations[0] = "(new entry)";
+
+				// Retrieve the primary keys from the table
+				// and store each one in an array of Strings
+				rs = stmt.executeQuery(selectStmt1);
+				int i = 0;
+				while (rs.next() && i < nextLocations.length)
+				{
+					nextLocations[i + 1] = rs.getString("Next_Loc_ID");
+					i++;
+				}
+				
+				// Retrieve the count of primary keys in the table
+				rs = stmt.executeQuery(selectCount);
+				count = 1;
+				while (rs.next())
+				{
+					count = rs.getInt(1);
+				}
+
+				//Dynamically create the array so as to not worry about the number of items
+				entry = new String[count + 2];
+				entry[0] = curPK;
+				entry[1] = "(new entry)";
+
+				// Retrieve the primary keys from the table
+				// and store each one in an array of Strings
+				rs = stmt.executeQuery(selectStmt);
+				i = 0;
+				while (rs.next() && i < entry.length)
+				{
+					entry[i + 2] = rs.getString("Cur_Loc_ID");
+					i++;
+				}
+			} catch (SQLException e)
+			{
+				e.printStackTrace();
 			}
 
-			//Dynamically create the array so as to not worry about the number of items
-			data = new String[count + 1];
-			data[0] = "(new entry)";
-
-			// Retrieve the primary keys from the table
-			// and store each one in an array of Strings
-			rs = stmt.executeQuery(selectStmt);
-			int i = 0;
-			while (rs.next() && i < data.length)
-			{
-				data[i + 1] = rs.getString("Cur_Loc_ID");
-				i++;
-			}
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
 		}
+		else
+		{
+			nextLocations = new String [1];
+			nextLocations[0] = "(new entry)";
+			
+			try
+			{
+				// Retrieve the count of primary keys in the table
+				Statement stmt = m_dbconn.createStatement();
+				rs = stmt.executeQuery(selectCount);
+				int count = 1;
+				while (rs.next())
+				{
+					count = rs.getInt(1);
+				}
 
-		return data;
+				//Dynamically create the array so as to not worry about the number of items
+				entry = new String[count + 1];
+				entry[0] = "(new entry)";
+
+				// Retrieve the primary keys from the table
+				// and store each one in an array of Strings
+				rs = stmt.executeQuery(selectStmt);
+				int i = 0;
+				while (rs.next() && i < entry.length)
+				{
+					entry[i + 1] = rs.getString("Cur_Loc_ID");
+					i++;
+				}
+			} catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		return entry;
 	}
 	
 	/**
@@ -272,7 +309,7 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 		if (e.getSource() == selectButton)
 		{
 			int index = dropBox.getSelectedIndex();
-			curLoc = curLocations[index];
+			curPK = curLocations[index];
 			index = dropBox_next.getSelectedIndex();
 			nextLoc = nextLocations[index];
 			updateGUI(Runner.getDBConnection());
@@ -284,18 +321,18 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 		if (e.getSource() == southButtons[0])
 		{
 			int index = dropBox.getSelectedIndex();
-			curLoc = curLocations[index];
+			curPK = curLocations[index];
 			PreparedStatement stmt;
 			try
 			{
 				stmt = Runner.getDBConnection().prepareStatement("DELETE FROM LEADS_TO WHERE Cur_Loc_ID=?");
-				stmt.setString(1, curLoc);
+				stmt.setString(1, curPK);
 				stmt.executeUpdate();
 			} catch (SQLException e1)
 			{
 				e1.printStackTrace();
 			}
-			curLoc = null;
+			curPK = null;
 			updateGUI(Runner.getDBConnection());
 			dropBox.setSelectedIndex(0);
 		}
@@ -304,7 +341,7 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 		if (e.getSource() == southButtons[1])
 		{
 			int index = dropBox.getSelectedIndex();
-			curLoc = curLocations[index];
+			curPK = curLocations[index];
 			PreparedStatement stmt;
 			try
 			{
@@ -312,13 +349,13 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 						"UPDATE LEADS_TO SET Cur_Loc_ID=?, Next_Loc_ID=? WHERE Cur_Loc_ID=?");
 				stmt.setString(1, curLocTF.getText().trim());
 				stmt.setString(2, nextLocTF.getText().trim());
-				stmt.setString(3, curLoc);
+				stmt.setString(3, curPK);
 				stmt.executeUpdate();
 			} catch (SQLException e2)
 			{
 				e2.printStackTrace();
 			}
-			curLoc = null;
+			curPK = null;
 			updateGUI(Runner.getDBConnection());
 			dropBox.setSelectedIndex(0);
 		}
@@ -337,7 +374,7 @@ public class LeadsToGUI  extends JFrame implements ActionListener
 			{
 				e3.printStackTrace();
 			}
-			curLoc = null;
+			curPK = null;
 
 			updateGUI(Runner.getDBConnection());
 			dropBox.setSelectedIndex(0);

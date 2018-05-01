@@ -77,6 +77,15 @@ public class CreatureGUI extends JFrame implements ActionListener
 		northPanel.add(tableName);
 		northPanel.add(dropBox);
 		northPanel.add(selectButton);
+		
+		//Instructions on how to use the GUI
+		northPanel.add(new JLabel("Use the drop down menu to select an entry."));
+		northPanel.add(new JLabel("Once an entry is selected, press the Select button"));
+		northPanel.add(new JLabel("to pull the information related to that entry."));
+		northPanel.add(new JLabel(" At this point you may then update or delete that entry."));
+		northPanel.add(new JLabel("The final option (insert) is available when the entry"));
+		northPanel.add(new JLabel("selected is (new entry), which will insert the input"));
+		northPanel.add(new JLabel("data into the database."));
 
 		add("North", northPanel);
 

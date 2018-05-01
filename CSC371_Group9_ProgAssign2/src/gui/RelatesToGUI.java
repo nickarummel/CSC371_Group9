@@ -66,11 +66,22 @@ public class RelatesToGUI  extends JFrame implements ActionListener
 		selectButton = new JButton("Select");
 		selectButton.addActionListener(this);
 
-		JPanel titlePanel = new JPanel(new GridLayout(2,1));
-		titlePanel.add(tableName);
-		titlePanel.add(selectButton);
+		northPanel = new JPanel(new GridLayout(2,1));
+		northPanel.add(tableName);
+		northPanel.add(selectButton);
+		//Instructions on how to use the GUI
+		northPanel.add(new JLabel("Use the drop down menu to select an entry."));
+		northPanel.add(new JLabel("Once an entry is selected, press the Select button"));
+		northPanel.add(new JLabel("to pull the information related to that entry."));
+		northPanel.add(new JLabel("You may then select the related data to this entry from"));
+		northPanel.add(new JLabel("the second drop down menu. Similarly to selecting the"));
+		northPanel.add(new JLabel("first entry, press the Select button to pull the complete"));
+		northPanel.add(new JLabel("information from this entry. At this point you may then"));
+		northPanel.add(new JLabel("delete or update the info displayed. If either drop down"));
+		northPanel.add(new JLabel("has (new entry) displayed, you may insert the input"));
+		northPanel.add(new JLabel("data into the database as a new entry."));
 		
-		add("North",titlePanel);
+		add("North",northPanel);
 				
 		dropBox_next = new JComboBox<String>(crIDs);
 		
@@ -323,9 +334,6 @@ public class RelatesToGUI  extends JFrame implements ActionListener
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
 		
 		return entry;
 	}
